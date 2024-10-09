@@ -1,0 +1,17 @@
+[
+    {
+        "user_id": 1,
+        "title": "How to make the best cookies.",
+        "content": "Love cookies."
+    },
+    {
+        "user_id": 2,
+        "title": "Praise worthy restaurants in LA.",
+        "content": "Love food."
+    },
+    {
+        "user_id": 3,
+        "title": "Homegood Finds.",
+        "content": "Love Homegoods."
+    }
+]
