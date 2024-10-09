@@ -1,0 +1,2 @@
+DROP DATABASE IF EXISTS publish_db;
+CREATE DATABASE publish_db;
