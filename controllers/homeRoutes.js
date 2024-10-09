@@ -1,8 +1,8 @@
 const router = require('express').Router();
-const { User } = require('../models');
+const { User, Post } = require('../models');
 const withAuth = require('../utils/auth');
 
-// route to find all posts
+// GET route to find all posts
 router.get('/', withAuth, async (req, res) => {
     try {
         const userData = await User.findAll({
@@ -21,10 +21,44 @@ router.get('/', withAuth, async (req, res) => {
     }
 });
 
-// route to find one post
+// GET route to find one post
+router.get('/post/:id', async (req, res) => {
+    try {
+        const postData = await Post.findOne({
+            where: {
+                id: req.params.id
+            },
+            attributes: [
+                'id',
+                'title',
+                'body',
+            ],
+            include: [
+                {
+                    model: User,
+                    attributes: ['username'],
+                },
+            ],
+        });
+
+        if (!postData) {
+            res.status(404).json({ message: 'No post found.' });
+            return;
+        }
+
+        const post = postData.get({ plain: true });
+
+        res.render('post', {
+            ...post,
+            logged_in: req.session.logged_in
+        });
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
 
 
-// route to login
+// GET route to login
 router.get('/login', (req, res) => {
     if (req.session.logged_in) {
         res.redirect('/');
@@ -34,6 +68,15 @@ router.get('/login', (req, res) => {
     res.render('login');
 });
 
-// route to sign up
+// GET route to sign up
+router.get('/signup', (req, res) => {
+    if (req.session.logged_in) {
+        res.redirect('/');
+        return;
+    }
+
+    res.render('signup');
+});
+
 
 module.exports = router;
